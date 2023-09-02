@@ -6,8 +6,13 @@
  */
 function createDictionary(entries) {
   // Створення порожнього словника
+  let map = new Map([]);
   // Використання методу forEach для перебору масиву пар ключ-значення
+  entries.forEach((key, value) => {
+    map.set(key, value)
+  });
   // Додавання пари ключ-значення до словника за допомогою методу set
+  return map
 }
 
 // Приклад використання функції createDictionary
@@ -38,7 +43,11 @@ console.log(
  */
 function convertMapToObject(map) {
   // Перебираємо ключі та значення в словнику
+  for (const [key, value] of map) {
   // Додаємо ключ та значення до об'єкту
+  map.set(key, value)
+  }
+  return map
   // Повертаємо отриманий об'єкт
 }
 
@@ -63,8 +72,15 @@ console.log(convertMapToObject(someMap));
  */
 function setValue(dictionary, key, value) {
   // Перевірка, чи існує вже ключ у словнику
+  if (dictionary.has(key)) {
   // Якщо ключ вже існує, встановлюємо для нього нове значення в верхньому регістрі
+  return dictionary.set(key, value);
+  }  
   // Якщо ключ не існує, додаємо нову пару ключ-значення до словника де значення буде таким же як ключ
+  else {
+    dictionary.set(key, key)
+  }
+  return dictionary;
 }
 
 // Приклад використання функції setValue
@@ -98,8 +114,12 @@ console.log(
  */
 function deleteKey(dictionary, key) {
   // Перевірка, чи існує ключ у словнику
-  // Якщо ключ існує, видаляємо його та відповідне значення
+  if (dictionary.has(key)) {
+    // Якщо ключ існує, видаляємо його та відповідне значення
+    return dictionary.delete(key)
+  }  
   // Якщо ключ не знайдено, повертаємо false
+  else return false
 }
 
 // Приклад використання функції deleteKey
@@ -125,10 +145,18 @@ console.log(
  */
 function getKeysStartingWith(dictionary, letter) {
   // Оголошення порожнього масиву для збереження ключів
+  let arr = [];
   // Перебір ключів словника за допомогою циклу for...of
-  // Перевірка, чи ключ починається з заданої букви
+  for (let [key] of dictionary) {
+    console.log(key)
+    // Перевірка, чи ключ починається з заданої букви
+    if (key.startsWith(letter)){
+      arr.push(key)
+    }
+  }  
   // Якщо ключ починається з заданої букви, додаємо його до масиву
   // Повертаємо масив
+  return arr
 }
 
 // Приклад використання функції getKeysStartingWith
@@ -158,11 +186,23 @@ console.log(
  */
 function addKeyValuePairs(dictionary, entries) {
   // Ведемо статистику доданих та відхилених ключів, для цього створемо змінні added та rejected з початковими значеннями 0
+  let added = 0;
+  let rejected = 0;  
   // Використовуємо метод forEach для перебору масиву пар ключ-значення
-  // Перевіряємо, чи словник вже містить такий ключ за допомогою методу has
+  entries.forEach(([key, value]) => {   
+  // Перевіряємо, чи словник вже містить такий ключ за допомогою методу has 
+    if (!dictionary.has(key)) {
   // Якщо ключ є унікальним, додаємо його до словника за допомогою методу set та збільшимо added на 1
+      dictionary.set(key, value);
+      added += 1;    
+    }
+    else {
+      rejected += 1;
+    }
+  })  
   // Якщо ключ не є унікальним, збільшимо rejected на 1
   // Повертаємо об'єкт з dictionary, added, rejected
+  return {dictionary, added, rejected};
 }
 
 console.log("Завдання: 6 ==============================");
@@ -196,13 +236,27 @@ console.log(
  */
 function transformDictionary(dictionary) {
   // Створюємо порожні масиви для ключів (змінна keys), значень (змінна values) і пар ключ-значення (змінна entries)
+  let keys = [];
+  let values = [];
+  let entries = [];
   // Використовуємо цикл for...of і метод keys для перебору ключів словника
-  // Додаємо кожен ключ до масиву keys за допомогою методу push
-  // Використовуємо цикл for...of і метод values для перебору значень словника
-  // Додаємо кожне значення до масиву values за допомогою методу push
-  // Використовуємо цикл for...of і метод entries для перебору пар ключ-значення словника
-  // Додаємо кожну пару ключ-значення до масиву entries за допомогою методу push
-  // Повертаємо об'єкт, який містить масиви ключів (властивість keys), значень (властивість values) і пар ключ-значення (властивість entries)
+  for (let keys of dictionary){
+    // Додаємо кожен ключ до масиву keys за допомогою методу push
+    keys.push(key)
+    console.log(keys)
+  }
+//    // Використовуємо цикл for...of і метод values для перебору значень словника
+//   for (let value of dictionary){
+// // Додаємо кожне значення до масиву values за допомогою методу push
+// values.push(value)
+//   }
+//   // Використовуємо цикл for...of і метод entries для перебору пар ключ-значення словника
+//  for ([keys, values] of dictionary) {
+//   // Додаємо кожну пару ключ-значення до масиву entries за допомогою методу push
+//   entries.push([keys, values])
+//  }  
+//   // Повертаємо об'єкт, який містить масиви ключів (властивість keys), значень (властивість values) і пар ключ-значення (властивість entries)
+//   return {keys, values, entries};
 }
 
 console.log("Завдання: 7 ==============================");

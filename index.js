@@ -240,23 +240,22 @@ function transformDictionary(dictionary) {
   let values = [];
   let entries = [];
   // Використовуємо цикл for...of і метод keys для перебору ключів словника
-  for (let keys of dictionary){
+  for (let key of dictionary.keys()){
     // Додаємо кожен ключ до масиву keys за допомогою методу push
-    keys.push(key)
-    console.log(keys)
+    keys.push(key)    
   }
 //    // Використовуємо цикл for...of і метод values для перебору значень словника
-//   for (let value of dictionary){
+  for (let value of dictionary.values()){
 // // Додаємо кожне значення до масиву values за допомогою методу push
-// values.push(value)
-//   }
+values.push(value)
+  }
 //   // Використовуємо цикл for...of і метод entries для перебору пар ключ-значення словника
-//  for ([keys, values] of dictionary) {
-//   // Додаємо кожну пару ключ-значення до масиву entries за допомогою методу push
-//   entries.push([keys, values])
-//  }  
+ for (let entrie of dictionary.entries()) {
+  // Додаємо кожну пару ключ-значення до масиву entries за допомогою методу push
+  entries.push(entrie)
+ }  
 //   // Повертаємо об'єкт, який містить масиви ключів (властивість keys), значень (властивість values) і пар ключ-значення (властивість entries)
-//   return {keys, values, entries};
+  return {keys, values, entries};
 }
 
 console.log("Завдання: 7 ==============================");
@@ -289,9 +288,14 @@ console.log(
  */
 function checkPresence(dictionary, keys) {
   // Створюємо порожній масив для збереження результатів перевірки
+  const presence = [];
   // Використовуємо цикл forEach для перебору масиву ключів
+  keys.forEach((key) => {
+    presence.push(dictionary.has(key))
+  })
   // Додаємо результат перевірки (true або false) до масиву presence при наявності ключа у словнику
   // Повертаємо масив
+  return presence
 }
 
 console.log("Завдання: 8 ==============================");
@@ -317,11 +321,17 @@ console.log(
  */
 function getFilteredDictionarySize(dictionary, filter) {
   // Створюємо новий Map об'єкт для зберігання елементів, що відповідають фільтру
+  let map = new Map();
   // Використовуємо for...of цикл разом з методом entries() для перебору пар [ключ, значення] словника
-  // Якщо пара [ключ, значення] відповідає фільтру, додаємо її до фільтрованого словника
+  for (let [key, value] of dictionary.entries()) {
+   // Якщо пара [ключ, значення] відповідає фільтру, додаємо її до фільтрованого словника 
+  if (filter(key, value)) {
+    map.set(key, value)
+  }
   // Повертаємо розмір фільтрованого словника, використовуючи властивість size
+  return map.size;
 }
-
+}
 console.log("Завдання: 9 ==============================");
 
 console.log(
@@ -346,8 +356,11 @@ console.log(
  */
 function sortByValues(dictionary) {
   // Конвертуємо словник в масив пар ключ-значення за допомогою оператора деструктурізації
-  // Сортуємо масив пар ключ-значення за значеннями в порядку спадання
+  let arr = [...dictionary.entries()]
+   // Сортуємо масив пар ключ-значення за значеннями в порядку спадання
+  arr.sort((a, b) => b[1] - a[1])   
   // Конвертуємо відсортований масив пар ключ-значення назад у словник
+  return new Map(arr)
 }
 
 console.log("Завдання: 10 ==============================");
@@ -364,11 +377,11 @@ console.log(
   )
 );
 // Виведе: Map {
-// 'The Little Prince' => 200000000,
-// 'Harry Potter and the Philosopher's Stone' => 120000000,
-// 'The Hobbit' => 100000000,
-// 'And Then There Were None' => 100000000,
-// 'Dream of the Red Chamber' => 100000000 }
+// 'The Little Prince' => 200 000 000,
+// 'Harry Potter and the Philosopher's Stone' => 120 000 000,
+// 'The Hobbit' => 100 000 000,
+// 'And Then There Were None' => 100 000 000,
+// 'Dream of the Red Chamber' => 100 000 000 }
 
 // Завдання: 11
 /**
@@ -379,6 +392,13 @@ console.log(
  */
 function resetDictionary(dictionary, maxSize) {
   // Використовуємо метод size для перевірки кількості елементів у словнику
+  if (dictionary.size > maxSize) {
+    dictionary.clear()
+    return true + "оскільки у словнику було " + dictionary.size + " елементів, що більше ніж  maxSize = " + maxSize
+  }
+  if (dictionary.size <= maxSize){
+    return false
+  }
   // Якщо кількість елементів більша ніж максимально допустима, очищуємо словник за допомогою методу clear
   // Повертаємо true, оскільки словник був очищений
   // Повертаємо false, оскільки кількість елементів не перевищує максимально допустиму, тому словник не був очищений
@@ -411,10 +431,21 @@ console.log(
  * Повертає - Множину, яка містить ключі словника в модифікованому вигляді.
  */
 function convertDictionaryToSet(dictionary) {
+  let set = new Set()
   // Перебираємо ключі словника
+  for (let key of dictionary.keys())
   // Якщо ключ є рядком, переводимо його в верхній регістр і додаємо до множини
+  if (typeof key === "string"){
+    key = key.toUpperCase()
+    set.add(key)
+  }
   // Якщо ключ є числом, збільшуємо його на 1 і додаємо до множини
+  if (typeof key === "number") {
+    key++;
+    set.add(key);
+  }
   // Повертаємо отриману множину
+  return set;
 }
 
 // Приклад використання функції convertDictionaryToSet
@@ -440,9 +471,14 @@ console.log(convertDictionaryToSet(mixedDictionary));
  * Повертає - Словник, який містить елементи множини як ключі та їх коди перших символів як значення.
  */
 function convertSetToDictionary(set) {
+  let newMap = new Map();
   // Перебираємо елементи множини
+  for (let elem of set) {
+    newMap.set(elem, elem.charCodeAt(0))
+  }
   // Додаємо елемент в словник з ключем, який дорівнює елементу, та значенням, яке дорівнює коду його першого символу
   // Повертаємо отриманий словник
+  return newMap
 }
 
 // Приклад використання функції convertSetToDictionary
